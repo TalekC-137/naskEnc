@@ -59,5 +59,7 @@ dependencies {
     //groupie
     implementation "com.github.lisawray.groupie:groupie:2.9.0"
 
+    //biometrics
+    implementation("androidx.biometric:biometric:1.2.0-alpha03")
 
 }
