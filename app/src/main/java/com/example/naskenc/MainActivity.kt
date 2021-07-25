@@ -1,8 +1,13 @@
 package com.example.naskenc
 
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
@@ -14,7 +19,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 import net.sqlcipher.database.SQLiteDatabase
 import java.io.*
 import java.security.AccessController.getContext
+import java.util.*
 import java.util.concurrent.Executor
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,6 +32,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var executor: Executor
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,44 +88,16 @@ class MainActivity : AppCompatActivity() {
             val imm: InputMethodManager =
                 baseContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(et_message.getWindowToken(), 0)
+
+        }
+
+        btn_test.setOnClickListener {
+            val i = Intent(this, BlueActivity::class.java)
+            startActivity(i)
         }
 
     }
 
-    private fun createFile(){
-        val FILE_NAME = "some_file_name_placeHolder.txt"
-        val text = "text_placeHolder"
-        val tmpDir: File = File(FILE_NAME)
-
-
-        var fos: FileOutputStream? = null
-
-        try {
-            fos = openFileOutput(FILE_NAME, MODE_PRIVATE)
-
-         //   fos.write(text.toByteArray())
-            Toast.makeText(
-                this, "Saved to $filesDir/$FILE_NAME",
-                Toast.LENGTH_LONG
-            ).show()
-
-
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close()
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-            }
-        }
-
-
-    }
 
     fun getDatabase(){
         val databaseHelper:DatabaseHelper = DatabaseHelper(this)
@@ -153,6 +134,9 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+
+
 
 }
 

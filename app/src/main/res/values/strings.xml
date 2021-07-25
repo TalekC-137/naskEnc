@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">naskEnc</string>
+    <string name="app_name">NaskEncryptor</string>
+    <string name="encrypt">encrypt</string>
+    <string name="decrypt">decrypt</string>
+    <string name="file_name">name</string>
+    <string name="text">text</string>
+    <string name="write_a_message">write a message</string>
+    <string name="send">send</string>
+
 </resources>
