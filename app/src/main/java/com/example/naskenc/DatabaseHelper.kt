@@ -14,14 +14,14 @@ class DatabaseHelper(context: Context) :
 
     companion object {
         private val DATABASE_VERSION = 1
-        private val DATABASE_NAME = "CryptedDatabase.db"
+        private val DATABASE_NAME = "CryptedDatabases.db"
 
-        private val TABLE_CRYPTED = "CryptedTable"
+        private val TABLE_CRYPTED = "CryptedTables"
 
         private val KEY_ID = "_id"
         private val KEY_TITLE = "title"
         private val KEY_NOTE = "note"
-        private val PASS_AES = "!@FSPA" //password for encryption/decryption
+      //  private val PASS_AES = "!@FSPA" //password for encryption/decryption
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -38,7 +38,7 @@ class DatabaseHelper(context: Context) :
         onCreate(db)
     }
 
-    fun addRow(crypted: CryptedModel): Long{
+    fun addRow(crypted: CryptedModel, PASS_AES: String): Long{
 
         val db = this.getWritableDatabase(PASS_AES)
 
@@ -53,7 +53,7 @@ class DatabaseHelper(context: Context) :
     }
 
 
-    fun viewEmployee(): ArrayList<CryptedModel> {
+    fun viewEmployee(PASS_AES: String): ArrayList<CryptedModel> {
 
         val empList: ArrayList<CryptedModel> = ArrayList<CryptedModel>()
 

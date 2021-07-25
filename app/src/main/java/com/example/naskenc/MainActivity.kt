@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -25,22 +26,20 @@ import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
-    val TAG = "fileEncrypter"
 
     val adapter = GroupieAdapter()
 
     private lateinit var executor: Executor
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
-
-
-
+    var TAG = "encryption_debug"
+    var KEY = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        SQLiteDatabase.loadLibs(this);
-
+        generateAndReadAES()
+        SQLiteDatabase.loadLibs(this)
+        generateAndReadAES()
         executor = ContextCompat.getMainExecutor(this)
         biometricPrompt = BiometricPrompt(this, executor,
             object : BiometricPrompt.AuthenticationCallback() {
@@ -101,8 +100,8 @@ class MainActivity : AppCompatActivity() {
 
     fun getDatabase(){
         val databaseHelper:DatabaseHelper = DatabaseHelper(this)
-        if(databaseHelper.viewEmployee().isNotEmpty()) {
-            val noteList: ArrayList<CryptedModel> = databaseHelper.viewEmployee()
+        if(databaseHelper.viewEmployee(KEY).isNotEmpty()) {
+            val noteList: ArrayList<CryptedModel> = databaseHelper.viewEmployee(KEY)
             if(adapter.itemCount ==0){
             noteList.forEach {
                 adapter.add(CryptedNotesRow(it))
@@ -123,7 +122,7 @@ class MainActivity : AppCompatActivity() {
         val databaseHelper:DatabaseHelper = DatabaseHelper(this)
         if(et_title.text.isNotEmpty() && et_message.text.isNotEmpty()){
 
-            val status = databaseHelper.addRow(CryptedModel(0, et_title.text.toString(), et_message.text.toString()))
+            val status = databaseHelper.addRow(CryptedModel(0, et_title.text.toString(), et_message.text.toString()), KEY)
             if (status > -1) {
                 Toast.makeText(applicationContext, "note saved", Toast.LENGTH_LONG).show()
                 et_message.text.clear()
@@ -136,7 +135,34 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    fun generateAndReadAES(){
+        var sharedPref = this?.getPreferences(Context.MODE_PRIVATE)
 
+        if(sharedPref.getString(getString(R.string.shared_key), "pusta") == "pusta"){
+            //first app lauch - generate EAS key
+
+                val EASkey = getRandomString(6)
+
+            sharedPref = this?.getPreferences(Context.MODE_PRIVATE) ?: return
+            with (sharedPref.edit()) {
+                putString(getString(R.string.shared_key), EASkey)
+                apply()
+            }
+            Log.d(TAG, "the app is launched for the first time and the key has been generated $EASkey")
+        }else{
+            //not the first time launching the app and the key is already generated
+
+            KEY = sharedPref.getString(getString(R.string.shared_key), "pusta").toString()
+            Log.d(TAG, "the app is launched with generated key $KEY")
+        }
+    }
+
+    fun getRandomString(length: Int) : String {
+        val charset = "ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz0123456789!@#$%^&*()"
+        return (1..length)
+            .map { charset.random() }
+            .joinToString("")
+    }
 
 }
 

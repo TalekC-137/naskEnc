@@ -6,5 +6,6 @@
     <string name="text">text</string>
     <string name="write_a_message">write a message</string>
     <string name="send">send</string>
+    <string name="shared_key">KEYss</string>
 
 </resources>
