@@ -10,10 +10,12 @@ import android.content.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.activity_blue.*
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
 import java.lang.Exception
 import java.util.*
@@ -40,6 +42,7 @@ class BlueActivity : AppCompatActivity() {
         BluetoothServerController(this).start()
 
         btn_send.setOnClickListener {view ->
+
             if (BluetoothAdapter.getDefaultAdapter() == null) {
 
             } else {

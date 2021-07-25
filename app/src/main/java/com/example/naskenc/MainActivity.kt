@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
                 }
             })
         promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Biometric login for my app")
+            .setTitle("Biometric login")
             .setSubtitle("Log in using your biometric credential")
             .setNegativeButtonText("cancel")
             .build()
@@ -141,7 +141,7 @@ class MainActivity : AppCompatActivity() {
         if(sharedPref.getString(getString(R.string.shared_key), "pusta") == "pusta"){
             //first app lauch - generate EAS key
 
-                val EASkey = getRandomString(6)
+                val EASkey = getRandomString(256)
 
             sharedPref = this?.getPreferences(Context.MODE_PRIVATE) ?: return
             with (sharedPref.edit()) {

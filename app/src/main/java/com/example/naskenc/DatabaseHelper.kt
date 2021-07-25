@@ -14,9 +14,9 @@ class DatabaseHelper(context: Context) :
 
     companion object {
         private val DATABASE_VERSION = 1
-        private val DATABASE_NAME = "CryptedDatabases.db"
+        private val DATABASE_NAME = "CryptedDatabasese.db"
 
-        private val TABLE_CRYPTED = "CryptedTables"
+        private val TABLE_CRYPTED = "CryptedTablese"
 
         private val KEY_ID = "_id"
         private val KEY_TITLE = "title"
